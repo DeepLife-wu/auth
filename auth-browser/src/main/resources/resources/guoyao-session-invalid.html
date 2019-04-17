@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/bootstrap3.3.5/css/bootstrap.min.css">
+<script type="text/javascript" src="/bootstrap3.3.5/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/bootstrap3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var time=3;  
+    function closeWindow(){  
+        window.setTimeout('closeWindow()',1000);  
+        if(time>0){  
+            document.getElementById("show").innerHTML="倒计时<font color=red>" + time + "</font>秒后跳转到登录页";  
+            time--;  
+        }  
+        else{  
+        	window.location.href="/guoyao-signIn.html"; 
+        }  
+    } 
+</script>
+
+<title>Session失效</title>
+</head>
+<body onload="closeWindow();" style="background-color: #F5F5F5;">
+<!-- <h3>请通过guoyao.auth.browser.session.sessionInvalidUrl配置自己的页面URL</h3> -->
+	
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="alert alert-dismissable alert-success">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">关闭</button>
+				<h4>安全模块默认的session失效提示页面</h4>
+				<strong id="show"></strong>
+				如果未跳转请点击
+				<strong>
+					<a href="/guoyao-signIn.html" class="alert-link">登录</a>
+				</strong>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

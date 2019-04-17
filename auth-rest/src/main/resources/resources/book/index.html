@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/bootstrap3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="/js/page/jBootsrapPage.css">
+
+<script type="text/javascript" src="/bootstrap3.3.5/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/bootstrap3.3.5/js/bootstrap.min.js"></script>
+
+<!-- <script type="text/javascript" src="/js/page/jquery-1.10.2.min.js"></script> -->
+<script type="text/javascript" src="/js/page/jBootstrapPage.js"></script>
+
+<title>书籍首页</title>
+</head>
+<body>
+
+
+<div class="container">
+	<div class='row clearfix'>
+		<div class='col-md-12 column'>
+			<nav class='navbar navbar-default' role='navigation'>
+				<div class='navbar-header'>
+					 <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='#bs-example-navbar-collapse-1'> <span class='sr-only'>Toggle navigation</span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></button> <a class='navbar-brand' href='#'>读书网</a>
+				</div>
+				<div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
+					<ul class='nav navbar-nav'>
+						<li class='active'>
+							 <a href='/book/index.html'>首页</a>
+						</li>
+						<li>
+							 <a href='#'>书籍阅读</a>
+						</li>
+					</ul>
+					<div class='navbar-form navbar-left' role='search' id='bookSearch'>
+						<div class='form-group'>
+							<input name="keywords" type='text' class='form-control' />
+						</div> 
+						<button type='button' class='btn btn-default' onclick="defaultSearchBookByKeywords();">搜索</button>
+					</div>
+				</div>
+			</nav>
+			<!-- <div class='jumbotron col-md-12 column'>
+				<h2 class='text-info'>
+					你好访客,欢迎来看新修版金庸小说(本网参考<a href='http://www.jinyongwang.com/'>金庸网</a>开发,非商业用途)
+				</h2>
+				<p class='text-success'>
+					 &nbsp;&nbsp;<strong>金庸 </strong>作为武侠小说这一“项目”的“奥运冠军”，其超凡的功力在于他通过浪漫叙事构造的侠谱。武侠小说作
+					 为“写梦的文学”本不以写实见长，其人物创造主要来自作者想象和写作传统，写作传统中的程序化因素是另一回事，作者的想象主要偏重寓言化和象征化，它不直接来源于现实。而 <strong>金庸</strong>小说作为一种经典就恰恰在于它通过传统中的程序化形式把象征性、寓言性以及含蓄不尽的言外之意、耐人咀嚼的韵外之致等本属于中国古典文化要求的东西表现了出来，并借助独特的武侠语言文化的天空让我们作了一次堪称壮举的乌托邦飞翔。于是，我们才无法忘记萧峰和阿朱这一对主角情侣。也因此， <strong>金庸</strong>塑造的“侠谱”才会比“天龙八部”更令人荡气回肠、不知肉味，才会比那些在地下深藏百年甚至千年的佳酿更醇香无比。而他的这种历史处理也使得武侠世界中的人物和事件全出虚构，“真实”的历史不过是江湖武林的背景衬托，而人物的性格却呼之欲出了。
+					 杰出的武侠小说家，写武侠，写出的是人世的众生相；敏锐的读者，读武侠，读出的是人间的沧桑和百态。到如今， <strong>金庸</strong>小说的流播已经冲出华人世界，走得更远。但是，研讨 <strong>金庸</strong>小说的艺术特色时，要一时说清却是很难的，在这里，我无意谈论 <strong>金庸</strong>小说的所有艺术特色。前辈说书人常说“花开两朵，先表一枝”，我觉得用这一想法作为指导思想来切入 <strong>金庸</strong>作品涵盖乾坤的殿堂无疑是有效的。
+				</p>
+			</div> -->
+			
+			<div id='content'>
+			</div>
+			<div class="row" id='boot_page'>
+				<ul class='pagination pagination-lg'></ul>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+	//总记录数
+	var total = "";
+	//分页条按钮个数
+	var btnCnt = 10;
+	//第几页
+	var pageNum = 1;
+	//每页显示的条数
+	var pageSize = 20;
+	
+	$(function(){
+		generateBookTypeDiv();
+		
+		//回车调用默认的搜索功能
+		$("input[name=keywords]").keyup(function(){
+			if(event.keyCode == 13){
+				defaultSearchBookByKeywords();
+			}
+		});
+	});
+	
+	/**
+	回车/点击搜索按钮调用默认的搜索功能
+	*/
+	function defaultSearchBookByKeywords() {
+		total='';
+		searchBookByKeywords(pageNum);
+		//初始化分页插件
+		if(total!='') {
+		  createPage(pageSize,btnCnt,total);
+		  $("a[page=1]").click();
+		}
+	}
+	
+
+	/**
+	 * 分页插件
+	 * @param pageSize
+	 * @param buttons
+	 * @param total
+	 * @returns
+	 */
+	function createPage(pageSize, buttons, total) {
+	    $(".pagination").jBootstrapPage({
+	        pageSize : pageSize,
+	        total : total,
+	        maxPageButton:buttons,
+	        onPageClicked: function(obj, page) {
+	        	searchBookByKeywords((page+1));
+	        }
+	    });
+	}
+	
+	/**
+	分页或修改链接后的搜索
+	*/
+	function searchBookByKeywords(page) {
+		var searchLink = "keywords=" + $("input[name=keywords]").val();
+		if(page != '') {
+			searchLink += "&page=" + page;
+		}
+		$.ajax({
+			  url: "/book/search",
+			  data: searchLink,
+			  cache: false,
+			  async: false,
+			  success: function(response){
+				  if(response.code == 200) {
+					  total = response.data.recordCount;
+					  
+					  var divHtml = "<div class='row clearfix'>";
+					  //divHtml += "<div class='col-md-12 column text-left'>";
+					  response.data.bookList.forEach(function(book,i) {
+						divHtml += "<div class='row clearfix'>" +
+									  	"<div class='col-md-3 column text-left'> <a class='btn' target='_blank' href='/book/detail.html?id="+ book.id + "'><h5 class='text-info'>" + book.name + "#" + book.title + "</h5> </a></div>" +
+									  	"<div class='col-md-9 column text-left'></div>" +
+								   "</div>" +
+								   "<div class='row clearfix'>" +
+								   		"<div class='col-md-3 column text-left'> <a class='btn' target='_blank' href='/book/detail.html?id="+ book.id + "'><img width='120' height='200' alt='140x140' src='" + book.image + "' class='img-thumbnail' /> </a></div>" +
+								   		//"<div class='col-md-2 column text-left'></div>" +
+								   		"<div class='col-md-9 column text-left'> <p class='text-info'>" + book.note + "</p>作者:" + book.author + "</div>" + 
+								   "</div><hr/>";
+					  });
+					  
+					divHtml += "</div>";
+					$("#content").html(divHtml);
+				 }
+			  }
+		});
+	}
+	
+	function generateBookTypeDiv() {
+		$.ajax({
+			  url: "/book/type/list",
+			  cache: false,
+			  success: function(response){
+				  var typeDivHtml = "";
+				  var navUL = "";
+				  var tabContentDiv = "";
+				  if(response.code == 200) {
+					  response.data.forEach(function(type,i){
+						  if(i == 0) {
+							  navUL += "<li class='active'>";
+							  tabContentDiv += "<div class='tab-pane active' id='panel-" + type.id + "'>";
+						  } else {
+							  navUL += "<li>";
+							  tabContentDiv += "<div class='tab-pane' id='panel-" + type.id + "'>";
+						  }
+						  navUL += "<a href='#panel-" + type.id + "' data-toggle='tab'>" + type.name + "</a>";
+						  navUL += "</li>";
+						  
+						  tabContentDiv += "<h3 class='text-info'>" + type.name + "</h3>" +
+	  									   "<p class='text-success'>" + type.note + "</p></div>";
+					  });
+					  typeDivHtml += "<div class='jumbotron col-md-12 column'>" + 
+				 	 	"<div class='tabbable' id='tabs-308841'>" +
+				 	 		"<ul class='nav nav-tabs'>" +
+				 	 			navUL +
+				 	 		 "</ul>" +
+				 	 		 "<div class='tab-content'>" + 
+				 	 			tabContentDiv +
+				 	 		 "</div>" +
+				 	 	"</div>";
+			   	 	$("#content").append(typeDivHtml);
+			   	 	
+				   	 response.data.forEach(function(type,i){
+						  loadAllBookList(type.id);
+					 });
+				  }
+			  }
+		});
+	}
+	
+	/** 
+	根据书籍类型加载书籍列表(武侠类,古籍类)
+	*/
+	function loadAllBookList(type) {
+		$.ajax({
+			  url: "/book/list/" + type,
+			  cache: true,
+			  success: function(response){
+			    if(response.code == 200) {
+			    	var bookListContent = "<div class='row clearfix'>";
+			    	response.data.forEach(function(book,i){
+				    	bookListContent += "<div class='col-md-3 column text-center'>" +
+				    						  "<div class='row clearfix'>" + 
+				    						 	"<p>" + 
+				    						 		"<a class='btn' target='_blank' href='/book/clist.html?id="+ book.id + "'>" + 
+				    						 			"<img alt='175x250' src='" + book.image + "' class='img-thumbnail' />" +
+				    						 		"</a>" + 
+										   		 "</p>" +
+										   	  "</div>" +
+										   	  "<div class='row clearfix'>" + 
+				    						 	"<p>" + 
+											 		"<a class='btn' target='_blank' href='/book/clist.html?id="+ book.id + "'>" + book.name + "-" + book.author + "</a>" + 
+										   		 "</p>" +
+										   	  "</div>" +
+										   	"</div>";
+					   	if((i + 1) % 4 == 0) {
+			    			bookListContent += "</div>";
+			    			if(i < (response.data.length-1))
+			    				bookListContent += "<div class='row clearfix'>";
+			    		}
+			    	});
+			    	if(response.data.length % 4 != 0)
+			    		bookListContent += "</div>";
+			    	$("#panel-" + type).append(bookListContent);
+			    }
+			  }
+		});
+	}
+	
+</script>
+</body>
+</html>

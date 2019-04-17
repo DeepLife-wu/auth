@@ -1,0 +1,36 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.guoyao.auth.core.properties.SecurityProperties",
+      "name": "guoyao.auth",
+      "type": "com.guoyao.auth.core.properties.SecurityProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.guoyao.auth.core.properties.SecurityProperties",
+      "name": "guoyao.auth.browser",
+      "description": "浏览器环境配置",
+      "type": "com.guoyao.auth.core.properties.BrowserProperties"
+    },
+    {
+      "sourceType": "com.guoyao.auth.core.properties.SecurityProperties",
+      "name": "guoyao.auth.code",
+      "description": "验证码配置",
+      "type": "com.guoyao.auth.core.properties.ValidateCodeProperties"
+    },
+    {
+      "sourceType": "com.guoyao.auth.core.properties.SecurityProperties",
+      "name": "guoyao.auth.oauth2",
+      "description": "OAuth2认证服务器配置",
+      "type": "com.guoyao.auth.core.properties.OAuth2Properties"
+    },
+    {
+      "sourceType": "com.guoyao.auth.core.properties.SecurityProperties",
+      "name": "guoyao.auth.social",
+      "description": "社交登录配置",
+      "type": "com.guoyao.auth.core.properties.SocialProperties"
+    }
+  ]
+}
